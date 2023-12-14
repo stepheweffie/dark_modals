@@ -44,12 +44,10 @@ async def dark_modals():
         return _modal
 
     async def try_submit(name, email, bg) -> None:
-        if name.value and email.value:
-            name.value = ''
-            email.value = ''
+        if name and email:
             # await email validation
             bg_modal.remove(bg)
-            ui.notify(f'Please Check {email.value}', color='positive')
+            ui.notify(f'Please Check {email}', color='positive')
         else:
             ui.notify('Please fill out all fields', color='negative')
 
@@ -73,7 +71,8 @@ async def dark_modals():
                     email = ui.input(label='Email', placeholder='Enter Email').on('keydown.enter', try_submit)
                 with ui.row().classes('w-full items-center px-4'):
                     submit = ui.button('Submit').classes('text-xl w-72').on('click',
-                                                                            lambda: try_submit(name, email, bg))
+                                                                            lambda: try_submit(name.value, email.value,
+                                                                                               bg))
 
     # Open the modals
     ui.button('Open Modal').on('click', get_modal)
