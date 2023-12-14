@@ -1,4 +1,4 @@
-from nicegui import ui
+from nicegui import ui, app
 
 
 @ui.page(path='/')
@@ -45,13 +45,17 @@ async def dark_modals():
 
     async def try_submit(name, email, bg) -> None:
         if name and email:
+            app.storage.user['name'] = name
+            app.storage.user['email'] = email
             # await email validation
+            # app.storage.user.set('authenticated', True)
             bg_modal.remove(bg)
             ui.notify(f'Please Check {email}', color='positive')
         else:
             ui.notify('Please fill out all fields', color='negative')
 
-    def get_modal():
+    async def get_modal():
+
         with bg_modal:
             # Without a new modal the modal will not close
             bg = toggle_dark_mode(dark_mode_switch.value, bg_modal)
@@ -77,11 +81,10 @@ async def dark_modals():
                                                                                                bg))
 
     # Open the modals
-    ui.button('Open Modal').on('click', get_modal)
-    # await app.storage.user.get('authenticated', False)
-    # if app.storage.user.get('authenticated', False):
-    #     return "That email address is already signed up."
+    open = ui.button('Open Modal').on('click', lambda: get_modal())
+    with open:
+        if app.storage.user.get('authenticated', True):
+            return f"Your email address, {app.storage.user.get('email')}  is already signed up."
 
 
-ui.run()
-
+ui.run(storage_secret='secret')
