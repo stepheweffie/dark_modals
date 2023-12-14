@@ -68,7 +68,9 @@ async def dark_modals():
                     name = ui.input(label='Name', placeholder='Enter Name')
                 with ui.row().classes('w-full items-center px-4'):
                     ui.label('Email').classes('text-xl')
-                    email = ui.input(label='Email', placeholder='Enter Email').on('keydown.enter', try_submit)
+                    email = ui.input(label='Email', placeholder='Enter Email').on('keydown.enter', lambda:
+                                                                                  try_submit(name.value, email.value,
+                                                                                             bg))
                 with ui.row().classes('w-full items-center px-4'):
                     submit = ui.button('Submit').classes('text-xl w-72').on('click',
                                                                             lambda: try_submit(name.value, email.value,
@@ -78,7 +80,7 @@ async def dark_modals():
     ui.button('Open Modal').on('click', get_modal)
     # await app.storage.user.get('authenticated', False)
     # if app.storage.user.get('authenticated', False):
-    #     return RedirectResponse('/')
+    #     return "That email address is already signed up."
 
 
 ui.run()
