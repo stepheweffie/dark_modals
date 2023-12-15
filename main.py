@@ -55,7 +55,6 @@ async def dark_modals():
             ui.notify('Please fill out all fields', color='negative')
 
     async def get_modal():
-
         with bg_modal:
             # Without a new modal the modal will not close
             bg = toggle_dark_mode(dark_mode_switch.value, bg_modal)
